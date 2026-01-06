@@ -4,7 +4,7 @@ Image analysis endpoint
 
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 from app.utils.validators import image_exists
 from app.utils.auth import verify_api_key
 from app.utils.analysis import MockAnalyzer
@@ -31,14 +31,14 @@ class AnalysisResponse(BaseModel):
 @router.post("/analyze", response_model=AnalysisResponse)
 async def analyze_image(
     request: AnalysisRequest,
-    x_api_key: Optional[str] = Header(None)
+    x_api_key: str = Header(...)
 ):
     """
     Analyze an uploaded image
     
     Args:
         request: AnalysisRequest with image_id
-        x_api_key: Optional API key header
+        x_api_key: API key header (required)
         
     Returns:
         AnalysisResponse with analysis results

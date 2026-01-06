@@ -6,7 +6,6 @@ from fastapi import APIRouter, UploadFile, File, Header, HTTPException, status
 from pydantic import BaseModel
 import uuid
 import os
-from typing import Optional
 from app.config import settings
 from app.utils.validators import validate_file_upload, validate_image
 from app.utils.auth import verify_api_key
@@ -28,14 +27,14 @@ class UploadResponse(BaseModel):
 @router.post("/upload", response_model=UploadResponse)
 async def upload_image(
     file: UploadFile = File(...),
-    x_api_key: Optional[str] = Header(None)
+    x_api_key: str = Header(...)
 ):
     """
     Upload an image file
     
     Args:
         file: Image file (JPEG or PNG)
-        x_api_key: Optional API key header
+        x_api_key: API key header (required)
         
     Returns:
         UploadResponse with image_id
